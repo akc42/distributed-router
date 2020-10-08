@@ -1,0 +1,35 @@
+{
+  "name": "@skc42/distributed-router",
+  "version": "1.0.1",
+  "description": "A Distributed Client Side Router",
+  "devDependencies": {
+    "jest": "^26.5.2",
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "babel-jest": "^26.5.2"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Alan Chandler",
+  "license": "GPL-3.0-or-later",
+  "main": "location.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akc42/distributed-router.git"
+  },
+  "keywords": [
+    "client",
+    "router",
+    "distributed",
+    "custom-elements"
+  ],
+  "bugs": {
+    "url": "https://github.com/akc42/distributed-router/issues"
+  },
+  "homepage": "https://github.com/akc42/distributed-router#readme"
+}
