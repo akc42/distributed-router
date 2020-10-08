@@ -1,6 +1,6 @@
 {
-  "name": "@skc42/distributed-router",
-  "version": "1.0.1",
+  "name": "@akc42/distributed-router",
+  "version": "1.0.2",
   "description": "A Distributed Client Side Router",
   "devDependencies": {
     "jest": "^26.5.2",
