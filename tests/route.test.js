@@ -123,7 +123,7 @@ describe('route', function() {
   describe('virtual query param and connection setters generate events', function() {
     let location;
     function routeUpdated(e) {
-      location = e.changed;
+      location = e.detail;
     }
     beforeEach(function(){
       location = {};

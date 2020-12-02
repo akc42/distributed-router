@@ -21,15 +21,15 @@
 
 
 
-import {connectUrl, disconnectUrl,LocationAltered} from '../location.js';
-import {RouteChanged} from '../route.js';
+import {connectUrl, disconnectUrl} from '../location.js';
+
 
 let originalLocation, route;
 
 const testFunctions = {
   setLocation: function (url) {
     window.history.pushState({}, '', url);
-    window.dispatchEvent(new LocationAltered());
+    window.dispatchEvent(new CustomEvent('location-altered', {bubbles: true, composed: true}));
   },
   routeChanged: function (r) {
     route = r;
@@ -85,25 +85,25 @@ describe('location module', function() {
       expect(route.query).toEqual({date: 20160101, staff: 2});
     });
     it('reflect changes to route path to url', function() {
-      window.dispatchEvent(new RouteChanged({
+      window.dispatchEvent(new CustomEvent('route-changed',{bubbles: true, composed: true, detail:{
         segment: 0,
         path: '/reports/bydate/20161231'
-      }));
+      }}));
       expect(window.location.pathname).toEqual('/reports/bydate/20161231');
     });
     it('reflect query string changes to route.query', function() {
-      window.dispatchEvent(new RouteChanged({
+      window.dispatchEvent(new CustomEvent('route-changed',{bubbles: true, composed: true, detail:{
         query:{firstname: 'Joe', lastname: 'Bloggs'}
-      }));
+      }}));
       expect(window.location.search).toEqual('?firstname=Joe&lastname=Bloggs');
     });
     it('setting query to null object in route should clear query string', function() {
-      window.dispatchEvent(new RouteChanged({
+      window.dispatchEvent(new CustomEvent('route-changed',{bubbles: true, composed: true, detail:{
         query:{firstname: 'Joe', lastname: 'Bloggs'}
-      }));
-      window.dispatchEvent(new RouteChanged({
+      }}));
+      window.dispatchEvent(new CustomEvent('route-changed',{bubbles: true, composed: true, detail:{
         query:{}
-      }));
+      }}));
       expect(window.location.search).toEqual('');
     });
 

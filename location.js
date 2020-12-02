@@ -22,20 +22,6 @@ let routeCallback = null;
 let lastChangedAt;
 let route;
 
-export class LocationAltered extends Event {
-
-
-  /*
-     The following are the fields provided by this event
-
-     none: 
-
-  */
-
-  constructor() {
-    super('location-altered', { composed: true, bubbles: true });
-  }
-};
 
 const dwellTime = () => {
   return parseInt(localStorage.getItem('dwellTime') || 2000, 10);  //dwell time might not be set initially, so keep retrying.
@@ -83,16 +69,16 @@ function urlChanged() {
 }
 function routeChanged(e) {
   let newPath = route.path;
-  if(e.changed.path !== undefined) {
-    if (Number.isInteger(e.changed.segment)) {
+  if(e.detail.path !== undefined) {
+    if (Number.isInteger(e.detail.segment)) {
       let segments = route.path.split('/');
       if (segments[0] === '') segments.shift(); //loose leeding
-      if(segments.length < e.changed.segment) {
+      if(segments.length < e.detail.segment) {
         throw new Error('routeUpdated with a segment longer than current route');
       }
-      if(segments.length > e.changed.segment) segments.length = e.changed.segment; //truncate to just before path
-      if (e.changed.path.length > 1) {
-        const newPaths = e.changed.path.split('/');
+      if(segments.length > e.detail.segment) segments.length = e.detail.segment; //truncate to just before path
+      if (e.detail.path.length > 1) {
+        const newPaths = e.detail.path.split('/');
         if (newPaths[0] === '') newPaths.shift(); //ignore blank if first char of path is '/'
         segments = segments.concat(newPaths);
       }
@@ -104,8 +90,8 @@ function routeChanged(e) {
     }
   }
   let query = Object.assign({}, route.query);
-  if (e.changed.query !== undefined) {
-    query = e.changed.query;
+  if (e.detail.query !== undefined) {
+    query = e.detail.query;
   }
   let newUrl = window.encodeURI(newPath).replace(/#/g, '%23').replace(/\?/g, '%3F');
   if (Object.keys(query).length > 0) {
