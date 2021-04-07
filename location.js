@@ -20,7 +20,7 @@
 
 let routeCallback = null;
 let lastChangedAt;
-let route;
+let route = null;
 
 
 const dwellTime = () => {
@@ -28,11 +28,14 @@ const dwellTime = () => {
 }
 
 export function connectUrl(callback) {
+  if (routeCallback  === null) {
+    window.addEventListener('hashchange', urlChanged);
+    window.addEventListener('popstate', urlChanged);
+    window.addEventListener('location-altered', urlChanged);
+    window.addEventListener('route-changed', routeChanged);
+  }
   routeCallback = callback;
-  window.addEventListener('hashchange',urlChanged);
-  window.addEventListener('popstate', urlChanged);
-  window.addEventListener('location-altered',urlChanged);
-  window.addEventListener('route-changed', routeChanged);
+  route = null;
   Promise.resolve().then(() => {
     urlChanged();
     lastChangedAt = window.performance.now() - (dwellTime() - 200); //first time we need to adjust for dwell time
@@ -55,7 +58,7 @@ function urlChanged() {
     path = slashIndex < 0 ? '/' : path.substring(0,slashIndex);
   } 
   const query = decodeParams(window.location.search.substring(1));
-  if (route && route.path ===  path && route.query === query) return;
+  if (route && route.path ===  path && JSON.stringify(route.query) === JSON.stringify(query)) return;
   lastChangedAt = window.performance.now();
   route = {
     path: path ,
